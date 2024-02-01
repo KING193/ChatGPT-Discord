@@ -12,3 +12,16 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         print(message.content)
+        if message.author == self.user:
+            return
+        command, user_message = None, None
+        
+        for text in ['/ai', '/bot', '/chatgpt']:
+            if message.content.startswith(text):
+                command = message.content.split('')[0]
+                user_message = message.content.replace(text, '')
+                print(command, user_message)
+
+        if command == "/ai" or command == "/bot" or command == "/chatgpt":
+            bot_response = chatgpt_response(promt = user_message)
+            await message.channel.send(f"Answer: {bot_response}")
