@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import discord
 import os
+from chatgpt_ai.open_ai import chatgpt_response
 
 load_dotenv()
 
@@ -18,15 +19,15 @@ class MyClient(discord.Client):
         
         for text in ['/ai', '/bot', '/chatgpt']:
             if message.content.startswith(text):
-                command = message.content.split('')[0]
+                command = message.content.split(' ')[0]
                 user_message = message.content.replace(text, '')
                 print(command, user_message)
 
         if command == "/ai" or command == "/bot" or command == "/chatgpt":
-            bot_response = chatgpt_response(promt = user_message)
+            bot_response = chatgpt_response(prompt = user_message)
             await message.channel.send(f"Answer: {bot_response}")
 
 intents = discord.Intents.default()
-intents.messages_content = True
+intents.message_content = True
 
 client = MyClient(intents = intents)
